@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_title_height"
+                android:gravity="left|center"
+                android:text="매일"
+                android:textColor="@color/green_008000"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_title_height"
+                android:background="@android:color/black"
+                android:gravity="left|center"
+                android:paddingLeft="5dp"
+                android:text="주사제"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!--<CheckedTextView-->
+                <!--android:id="@+id/drug1"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/day_width"-->
+                <!--android:background="@drawable/list_selector3"-->
+                <!--android:gravity="center"-->
+                <!--android:text="항류마티스약"-->
+                <!--android:textAlignment="center"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:textSize="17dp" />-->
+
+                <CheckedTextView
+                    android:id="@+id/drug1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/day_check_height"
+                    android:background="@drawable/list_selector3"
+                    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                    android:gravity="center"
+                    android:text="항류마티스약"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="17dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@android:color/white">
+
+                </View>
+
+                <CheckedTextView
+                    android:id="@+id/drug2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/day_check_height"
+                    android:background="@drawable/list_selector3"
+                    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                    android:gravity="center"
+                    android:text="골다공증약"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="17dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/day_title_height"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/black"
+                android:gravity="left|center"
+                android:paddingLeft="5dp"
+                android:text="경구투약제"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <CheckedTextView
+                    android:id="@+id/drug3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/day_check_height"
+                    android:background="@drawable/list_selector3"
+                    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                    android:gravity="center"
+                    android:text="항류마티스약"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="17dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@android:color/white">
+
+                </View>
+
+                <CheckedTextView
+                    android:id="@+id/drug4"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/day_check_height"
+                    android:background="@drawable/list_selector3"
+                    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                    android:gravity="center"
+                    android:text="골다공증약"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="17dp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/add_day_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="투약정보 추가"
+        android:textStyle="bold" />
+
+
+</LinearLayout>

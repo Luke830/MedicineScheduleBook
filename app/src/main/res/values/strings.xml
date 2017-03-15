@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MedicineScheduleBook</string>
+
+    <item name="add_id" type="id" />
+    <item name="click_id" type="id" />
+
+</resources>

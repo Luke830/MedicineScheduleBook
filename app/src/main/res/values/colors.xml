@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<textColor name="colorPrimary">#3F51B5</textColor>-->
+    <!--<textColor name="colorPrimaryDark">#303F9F</textColor>-->
+    <!--<textColor name="colorAccent">#FF4081</textColor>-->
+
+    <color name="sample_primary">#0093FF</color>
+    <color name="sample_accent">#006BBA</color>
+    <color name="list_divider">#e5e5e5</color>
+    <color name="list_select">#FF4081</color>
+
+    <color name="list_select2">#0093FF</color>
+
+    <color name="green">#00ff00</color>
+    <color name="green_008000">#008000</color>
+
+    <color name="gray_f1f1f1">#f1f1f1</color>
+
+
+</resources>

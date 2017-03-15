@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!--android:background="@drawable/list_selector"-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <CheckedTextView
+            android:id="@+id/tv_item_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textAlignment="gravity"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/text_view_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="매일"
+            android:textColor="@color/green"
+            android:textSize="7dp" />
+
+        <TextView
+            android:id="@+id/text_view_week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="매주"
+            android:textColor="@color/green"
+            android:textSize="7dp" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

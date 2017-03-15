@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context="project.sample.com.luke.medicineschedulebook.MainActivity">
+
+    <TextView
+        android:id="@+id/dialog_date_textView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:paddingLeft="5dp"
+        android:text="2017.02.02 투약 일정 추가"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/top_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/list_select"
+        android:text="투약 하셨나요?"
+        android:textColor="@android:color/white"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/bottom_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/sample_primary"
+        android:text="투약 일정 추가 / 변경"
+        android:textColor="@android:color/white"
+        android:textSize="20dp" />
+
+
+</LinearLayout>
