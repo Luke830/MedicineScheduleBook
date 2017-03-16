@@ -5,16 +5,15 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckedTextView;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class FragmentAddDayDrug extends Fragment implements View.OnClickListener {
 
@@ -60,9 +59,9 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
                 if (aArrayList != null) {
 
                     for (DrugModel2 drugModel2 : aArrayList) {
-                        if (DrugMainModel.DRUG_TYPE.A.equals(drugModel2.type)) {
+                        if (Data.DRUG_TYPE.A.equals(drugModel2.type)) {
                             drugCheckedTextView[0].setChecked(true);
-                        } else if (DrugMainModel.DRUG_TYPE.B.equals(drugModel2.type)) {
+                        } else if (Data.DRUG_TYPE.B.equals(drugModel2.type)) {
                             drugCheckedTextView[1].setChecked(true);
                         }
                     }
@@ -72,9 +71,9 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
 
                 if (bArrayList != null) {
                     for (DrugModel2 drugModel2 : bArrayList) {
-                        if (DrugMainModel.DRUG_TYPE.A.equals(drugModel2.type)) {
+                        if (Data.DRUG_TYPE.A.equals(drugModel2.type)) {
                             drugCheckedTextView[2].setChecked(true);
-                        } else if (DrugMainModel.DRUG_TYPE.B.equals(drugModel2.type)) {
+                        } else if (Data.DRUG_TYPE.B.equals(drugModel2.type)) {
                             drugCheckedTextView[3].setChecked(true);
                         }
                     }
@@ -132,11 +131,11 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
 
             drugModel.aDrugList = new ArrayList<DrugModel2>();
             if (drugCheckedTextView[0].isChecked()) {
-                DrugModel2 drugModel2 = new DrugModel2(DrugMainModel.DRUG_TYPE.A, false);
+                DrugModel2 drugModel2 = new DrugModel2(Data.DRUG_TYPE.A, false);
                 drugModel.aDrugList.add(drugModel2);
             }
             if (drugCheckedTextView[1].isChecked()) {
-                DrugModel2 drugModel2 = new DrugModel2(DrugMainModel.DRUG_TYPE.B, false);
+                DrugModel2 drugModel2 = new DrugModel2(Data.DRUG_TYPE.B, false);
                 drugModel.aDrugList.add(drugModel2);
             }
         }
@@ -148,11 +147,11 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
 
             drugModel.bDrugList = new ArrayList<DrugModel2>();
             if (drugCheckedTextView[2].isChecked()) {
-                DrugModel2 drugModel2 = new DrugModel2(DrugMainModel.DRUG_TYPE.A, false);
+                DrugModel2 drugModel2 = new DrugModel2(Data.DRUG_TYPE.A, false);
                 drugModel.bDrugList.add(drugModel2);
             }
             if (drugCheckedTextView[3].isChecked()) {
-                DrugModel2 drugModel2 = new DrugModel2(DrugMainModel.DRUG_TYPE.B, false);
+                DrugModel2 drugModel2 = new DrugModel2(Data.DRUG_TYPE.B, false);
                 drugModel.bDrugList.add(drugModel2);
             }
         }
@@ -169,8 +168,8 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
 
         ((ScheduleDrugActivity) getActivity()).drugMainModel.dayDrugList = arrayList;
 
+        // 오늘꺼 설정
         Cursor cursor = mDbHelper.getDayDiary(((ScheduleDrugActivity) getActivity()).date);
-
         if (cursor != null && cursor.getCount() > 0) {
             String sBody = new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugMainModel, ((ScheduleDrugActivity) getActivity()).drugMainModel.getClass());
             boolean isResult = mDbHelper.updateDiary(((ScheduleDrugActivity) getActivity()).date, sBody);
@@ -180,16 +179,77 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
             long addResult = mDbHelper.createDiary(((ScheduleDrugActivity) getActivity()).date, sBody);
             Kog.e("DEBUG", "addResult = " + addResult);
         }
+        cursor.close();
+        cursor = null;
+
+        // 매일 설정..
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, ((ScheduleDrugActivity) getActivity()).year);
+        calendar.set(Calendar.MONTH, ((ScheduleDrugActivity) getActivity()).month);
+        calendar.set(Calendar.DATE, ((ScheduleDrugActivity) getActivity()).day);
+        for (int i = 1; i <= 27; i++) {
+
+            calendar.add(Calendar.DATE, +1);
+
+//            CustomCalendar customCalendar = new CustomCalendar();
+//            customCalendar.calendar = calendar;
+//            customCalendar.isToday = false;
+
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int date = calendar.get(Calendar.DATE);
+
+            final String selectDay = year + ""
+                    + String.format("%02d", (month + 1))
+                    + "" + String.format("%02d", date);
+
+            Kog.e("year = " + year + " month = " + month + " date = " + date);
+
+            cursor = mDbHelper.getDayDiary(selectDay);
+            if (cursor != null && cursor.getCount() > 0) {
+
+//                while (cursor.moveToNext()) {
+//                    String cDate = cursor.getString(0);
+//                    String data = cursor.getString(1);
+//                    String created = cursor.getString(2);
+//
+//                    Kog.d("DEBUG", "target sAllDate = " + cDate + " " + cDate.substring(6, 8) + " data = " + data + " created = " + created);
+//
+//                    DrugMainModel drugMainModel = new Gson().fromJson(data, DrugMainModel.class);
+//
+//                    drugMainModel.dayDrugList = arrayList;
+//                    String sBody = new Gson().toJson(drugMainModel, ((ScheduleDrugActivity) getActivity()).drugMainModel.getClass());
+//                    boolean isResult = mDbHelper.updateDiary(((ScheduleDrugActivity) getActivity()).date, sBody);
+//                    Kog.e("DEBUG", "isResult = " + isResult);
+//
+//                }
+
+            } else {
+
+                String sBody = new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugMainModel, ((ScheduleDrugActivity) getActivity()).drugMainModel.getClass());
+                long addResult = mDbHelper.createDiary(selectDay, sBody);
+                Kog.e("DEBUG", "addResult = " + addResult);
+
+            }
+
+            cursor.close();
+            cursor = null;
+
+        }
 
         mDbHelper.close();
         mDbHelper = null;
 
         Kog.e(((ScheduleDrugActivity) getActivity()).drugMainModel.toString());
+        Kog.e(((ScheduleDrugActivity) getActivity()).date);
+
 
         Intent intent = new Intent();
         intent.putExtra(Data.INTENT_SELECT_POS, ((ScheduleDrugActivity) getActivity()).pos);
         intent.putExtra(Data.INTENT_DATE_MSG, new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugMainModel));
         getActivity().setResult(777, intent);
         getActivity().finish();
+
+
     }
 }

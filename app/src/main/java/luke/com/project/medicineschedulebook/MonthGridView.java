@@ -93,10 +93,14 @@ public class MonthGridView extends Fragment {
 
     private String key;
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public MonthGridView() {
+        super();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Kog.e("");
     }
 
     @Nullable
@@ -117,22 +121,32 @@ public class MonthGridView extends Fragment {
         final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
 
         //현재 날짜 텍스트뷰에 뿌려줌
-        tvDate.setText(mCal.get(Calendar.YEAR) + "/" + String.format("%02d", (mCal.get(Calendar.MONTH) + 1)));
+        tvDate.setText(mCal.get(Calendar.YEAR) + " / " + String.format("%02d", (mCal.get(Calendar.MONTH) + 1)));
+
+        dayList = new ArrayList<DateModel>();
+        loadDB();
+
+        gridAdapter = new GridAdapter(getActivity().getApplicationContext(), dayList);
+        gridView.setAdapter(gridAdapter);
+
+        ViewTreeObserver vto = gridView.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int width = gridView.getWidth();
+                gridView.setColumnWidth(width / 7);
+                gridView.invalidate();
+            }
+        });
+
+
+        return view;
+
+    }
+
+    public void loadDB() {
         mDbHelper = new DiaryDbAdapter(getActivity());
         mDbHelper.open();
-
-//        Cursor cursor = mDbHelper.getAllNotes();
-//        while (cursor.moveToNext()) {
-//
-//            String sDate = cursor.getString(0);
-//            String sTitle = cursor.getString(1);
-//            String sBody = cursor.getString(2);
-//            String sCreated = cursor.getString(3);
-//
-//            Log.d("DEBUG", "all sAllDate = " + sDate + " STitle = " + sTitle + " sBody = " + sBody + " sCreated = " + sCreated);
-//        }
-//
-//        cursor.close();
 
         hashMap = new HashMap<String, EventModel>();
         Cursor cursor = mDbHelper.getMonthNotes(Utils.getCurYearMonth(mCal));
@@ -153,7 +167,7 @@ public class MonthGridView extends Fragment {
         mDbHelper.close();
 
         //gridview 요일 표시
-        dayList = new ArrayList<DateModel>();
+
         dayList.add(new DateModel("일", Color.rgb(255, 0, 0), true, false, null));
         dayList.add(new DateModel("월", Color.rgb(0, 0, 0), true, false, null));
         dayList.add(new DateModel("화", Color.rgb(0, 0, 0), true, false, null));
@@ -162,9 +176,7 @@ public class MonthGridView extends Fragment {
         dayList.add(new DateModel("금", Color.rgb(0, 0, 0), true, false, null));
         dayList.add(new DateModel("토", Color.rgb(0, 0, 255), true, false, null));
 
-//        mCal = Calendar.getInstance();
         String total3 = mCal.get(Calendar.YEAR) + " " + mCal.get(Calendar.MONTH) + " " + mCal.get(Calendar.DATE);
-//        Log.d("DEBUG", "3 total = " + total3);
         mCal.set(Calendar.DATE, 1);
         int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
         //1일 - 요일 매칭 시키기 위해 공백 add
@@ -172,44 +184,12 @@ public class MonthGridView extends Fragment {
             dayList.add(new DateModel("", Color.rgb(0, 0, 0), false, false, null));
         }
 
-        String total = mCal.get(Calendar.YEAR) + " " + mCal.get(Calendar.MONTH) + " " + mCal.get(Calendar.DATE);
-//        Log.d("DEBUG", "1 total = " + total);
         setCalendarDate(mCal.get(Calendar.MONTH));
-        gridAdapter = new GridAdapter(getActivity().getApplicationContext(), dayList);
-        gridView.setAdapter(gridAdapter);
-//        gridView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-
-        ViewTreeObserver vto = gridView.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                int width = gridView.getWidth();
-//                Log.e("DEBUG", " " + width + " ");
-                gridView.setColumnWidth(width / 7);
-                gridView.invalidate();
-            }
-        });
-
-
-        return view;
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-
     }
 
 
@@ -218,14 +198,10 @@ public class MonthGridView extends Fragment {
      *
      * @param month
      */
-
     private void setCalendarDate(int month) {
-
 //        mCal.set(Calendar.MONTH, month);
-
         String total = mCal.get(Calendar.YEAR) + " " + mCal.get(Calendar.MONTH) + " " + mCal.get(Calendar.DATE);
 //        Log.d("DEBUG", "2 total = " + total);
-
         int iDay = Calendar.getInstance().get(Calendar.DATE);
 
         for (int i = 0; i < mCal.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
@@ -259,18 +235,12 @@ public class MonthGridView extends Fragment {
                 dateModel.sBody = hashMap.get(key).sBody;
                 dateModel.drugMainModel = new Gson().fromJson(dateModel.sBody, DrugMainModel.class);
 
-                if (dateModel.drugMainModel.dayDrugList != null && dateModel.drugMainModel.dayDrugList.size() > 0) {
+                if (dateModel.drugMainModel.dayDrugList != null && dateModel.drugMainModel.dayDrugList.size() > 0
+                        || dateModel.drugMainModel.weekDrugList != null && dateModel.drugMainModel.weekDrugList.size() > 0) {
                     dateModel.isEvent = true;
                 } else {
                     dateModel.isEvent = false;
                 }
-
-                if (dateModel.drugMainModel.weekDrugList != null && dateModel.drugMainModel.weekDrugList.size() > 0) {
-                    dateModel.isEvent = true;
-                } else {
-                    dateModel.isEvent = false;
-                }
-
             }
             dayList.add(dateModel);
         }
@@ -281,40 +251,14 @@ public class MonthGridView extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         Kog.e("requestCode = " + requestCode + " resultCode = " + resultCode);
 
-        if (data != null) {
+        updateUI();
 
-            int pos = -1;
-            String msg = null;
+    }
 
-            if (data.hasExtra(Data.INTENT_SELECT_POS)) {
-                pos = data.getIntExtra(Data.INTENT_SELECT_POS, -1);
-            }
-
-            if (data.hasExtra(Data.INTENT_DATE_MSG)) {
-                msg = data.getStringExtra(Data.INTENT_DATE_MSG);
-            }
-
-            if (pos > -1 && msg != null) {
-                gridAdapter.getItem(pos).sBody = msg;
-                gridAdapter.getItem(pos).drugMainModel = new Gson().fromJson(msg, DrugMainModel.class);
-                if (gridAdapter.getItem(pos).drugMainModel.dayDrugList != null && gridAdapter.getItem(pos).drugMainModel.dayDrugList.size() > 0) {
-                    gridAdapter.getItem(pos).isEvent = true;
-                } else {
-                    gridAdapter.getItem(pos).isEvent = false;
-                }
-
-                if (gridAdapter.getItem(pos).drugMainModel.weekDrugList != null && gridAdapter.getItem(pos).drugMainModel.weekDrugList.size() > 0) {
-                    gridAdapter.getItem(pos).isEvent = true;
-                } else {
-                    gridAdapter.getItem(pos).isEvent = false;
-                }
-                gridAdapter.notifyDataSetChanged();
-            }
-
-            Kog.e("pos = " + pos + " msg = " + msg);
-
-
-        }
+    public void updateUI() {
+        dayList.clear();
+        loadDB();
+        gridAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -340,7 +284,6 @@ public class MonthGridView extends Fragment {
         public GridAdapter(Context context, List<DateModel> list) {
 
             this.list = list;
-
             this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         }
@@ -546,6 +489,11 @@ public class MonthGridView extends Fragment {
             intent.putExtra(Data.INTENT_DATE_MSG, dateModel.sBody);
             intent.putExtra(Data.INTENT_SELECT_DATE, selectDay);
             intent.putExtra(Data.INTENT_SELECT_TITLE, selectTitle);
+
+            intent.putExtra(Data.INTENT_SELECT_YEAR, mCal.get(Calendar.YEAR));
+            intent.putExtra(Data.INTENT_SELECT_MONTH, mCal.get(Calendar.MONTH));
+            intent.putExtra(Data.INTENT_SELECT_DAY, Integer.parseInt(dateModel.day));
+
             startActivityForResult(intent, 660);
 
 //                ViewUtil.addDiaryDialog(getActivity(), dateModel.sBody != null ? dateModel.sBody : null, title, "추가하기", new View.OnClickListener() {

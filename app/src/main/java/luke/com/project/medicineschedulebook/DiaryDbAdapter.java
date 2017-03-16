@@ -115,13 +115,15 @@ public class DiaryDbAdapter {
 
     public Cursor getDayDiary(String rowYearMonthDay) throws SQLException {
 
+        // rowYearMonthDay -> 20170316
+
         Cursor mCursor =
                 mDb.query(true, DATABASE_TABLE, new String[]{KEY_DATE,
                                 KEY_BODY, KEY_CREATED}, KEY_DATE + "=" + rowYearMonthDay, null, null,
                         null, null, null);
-        if (mCursor != null) {
-            mCursor.moveToFirst();
-        }
+//        if (mCursor != null) {
+//            mCursor.moveToFirst();
+//        }
         return mCursor;
 
     }

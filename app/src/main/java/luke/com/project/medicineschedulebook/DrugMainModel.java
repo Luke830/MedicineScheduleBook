@@ -8,12 +8,6 @@ import java.util.ArrayList;
 
 public class DrugMainModel {
 
-    public static enum DRUG_TYPE {
-        // 항류마티스약, 골다공증약
-        // 메토트랙세이트, 엔브렐, 휴미라, 심포니, 오렌시아
-        A, B, C, D, E, F, G
-    }
-
     public boolean isDay;
     public boolean isWeek;
 

@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,17 +58,17 @@ public class FragmentAddWeekDrug extends Fragment implements View.OnClickListene
                 if (aArrayList != null) {
 
                     for (DrugModel2 drugModel2 : aArrayList) {
-                        if (DrugMainModel.DRUG_TYPE.C.equals(drugModel2.type)) {
+                        if (Data.DRUG_TYPE.C.equals(drugModel2.type)) {
                             drugCheckedTextView[0].setChecked(true);
-                        } else if (DrugMainModel.DRUG_TYPE.D.equals(drugModel2.type)) {
+                        } else if (Data.DRUG_TYPE.D.equals(drugModel2.type)) {
                             drugCheckedTextView[1].setChecked(true);
-                        } else if (DrugMainModel.DRUG_TYPE.E.equals(drugModel2.type)) {
+                        } else if (Data.DRUG_TYPE.E.equals(drugModel2.type)) {
                             drugCheckedTextView[2].setChecked(true);
-                        } else if (DrugMainModel.DRUG_TYPE.F.equals(drugModel2.type)) {
+                        } else if (Data.DRUG_TYPE.F.equals(drugModel2.type)) {
                             drugCheckedTextView[3].setChecked(true);
-                        } else if (DrugMainModel.DRUG_TYPE.G.equals(drugModel2.type)) {
+                        } else if (Data.DRUG_TYPE.G.equals(drugModel2.type)) {
                             drugCheckedTextView[4].setChecked(true);
-                        } else if (DrugMainModel.DRUG_TYPE.B.equals(drugModel2.type)) {
+                        } else if (Data.DRUG_TYPE.B.equals(drugModel2.type)) {
                             drugCheckedTextView[5].setChecked(true);
                         }
                     }
@@ -79,9 +78,9 @@ public class FragmentAddWeekDrug extends Fragment implements View.OnClickListene
 
                 if (bArrayList != null) {
                     for (DrugModel2 drugModel2 : bArrayList) {
-                        if (DrugMainModel.DRUG_TYPE.C.equals(drugModel2.type)) {
+                        if (Data.DRUG_TYPE.C.equals(drugModel2.type)) {
                             drugCheckedTextView[6].setChecked(true);
-                        } else if (DrugMainModel.DRUG_TYPE.B.equals(drugModel2.type)) {
+                        } else if (Data.DRUG_TYPE.B.equals(drugModel2.type)) {
                             drugCheckedTextView[7].setChecked(true);
                         }
                     }
@@ -152,31 +151,31 @@ public class FragmentAddWeekDrug extends Fragment implements View.OnClickListene
 
             drugModel.aDrugList = new ArrayList<DrugModel2>();
             if (drugCheckedTextView[0].isChecked()) {
-                DrugModel2 drugModel2 = new DrugModel2(DrugMainModel.DRUG_TYPE.C, false);
+                DrugModel2 drugModel2 = new DrugModel2(Data.DRUG_TYPE.C, false);
                 drugModel.aDrugList.add(drugModel2);
             }
             if (drugCheckedTextView[1].isChecked()) {
-                DrugModel2 drugModel2 = new DrugModel2(DrugMainModel.DRUG_TYPE.D, false);
+                DrugModel2 drugModel2 = new DrugModel2(Data.DRUG_TYPE.D, false);
                 drugModel.aDrugList.add(drugModel2);
             }
 
             if (drugCheckedTextView[2].isChecked()) {
-                DrugModel2 drugModel2 = new DrugModel2(DrugMainModel.DRUG_TYPE.E, false);
+                DrugModel2 drugModel2 = new DrugModel2(Data.DRUG_TYPE.E, false);
                 drugModel.aDrugList.add(drugModel2);
             }
 
             if (drugCheckedTextView[3].isChecked()) {
-                DrugModel2 drugModel2 = new DrugModel2(DrugMainModel.DRUG_TYPE.F, false);
+                DrugModel2 drugModel2 = new DrugModel2(Data.DRUG_TYPE.F, false);
                 drugModel.aDrugList.add(drugModel2);
             }
 
             if (drugCheckedTextView[4].isChecked()) {
-                DrugModel2 drugModel2 = new DrugModel2(DrugMainModel.DRUG_TYPE.G, false);
+                DrugModel2 drugModel2 = new DrugModel2(Data.DRUG_TYPE.G, false);
                 drugModel.aDrugList.add(drugModel2);
             }
 
             if (drugCheckedTextView[5].isChecked()) {
-                DrugModel2 drugModel2 = new DrugModel2(DrugMainModel.DRUG_TYPE.B, false);
+                DrugModel2 drugModel2 = new DrugModel2(Data.DRUG_TYPE.B, false);
                 drugModel.aDrugList.add(drugModel2);
             }
 
@@ -189,11 +188,12 @@ public class FragmentAddWeekDrug extends Fragment implements View.OnClickListene
 
             drugModel.bDrugList = new ArrayList<DrugModel2>();
             if (drugCheckedTextView[6].isChecked()) {
-                DrugModel2 drugModel2 = new DrugModel2(DrugMainModel.DRUG_TYPE.C, false);
+                DrugModel2 drugModel2 = new DrugModel2(Data.DRUG_TYPE.C, false);
                 drugModel.bDrugList.add(drugModel2);
             }
+
             if (drugCheckedTextView[7].isChecked()) {
-                DrugModel2 drugModel2 = new DrugModel2(DrugMainModel.DRUG_TYPE.B, false);
+                DrugModel2 drugModel2 = new DrugModel2(Data.DRUG_TYPE.B, false);
                 drugModel.bDrugList.add(drugModel2);
             }
         }

@@ -1,5 +1,6 @@
 package luke.com.project.medicineschedulebook;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * Created by itsm02 on 2017. 2. 22..
@@ -29,8 +31,9 @@ public class CalendarActivity extends AppCompatActivity {
 
 //    public Calendar frontCal, lastCal;
 
-    @Override
+    public HashMap<Integer, MonthGridView> hashMap;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         Log.e("DEBUG", "onCreate onCreate onCreate");
@@ -40,7 +43,61 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
 
 
+        hashMap = new HashMap<Integer, MonthGridView>();
         arrayList = new ArrayList<CustomCalendar>();
+        load();
+
+        pager = (ViewPager) findViewById(R.id.pager);
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(pagerAdapter);
+        pager.setCurrentItem(MAX_INTERVER);
+
+        pager.setOffscreenPageLimit(1);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                Kog.e("position = " + position);
+
+
+//                arrayList.clear();
+//                load();
+//                pagerAdapter.notifyDataSetChanged();
+
+//                if (2 > position) {
+
+
+//                    frontCal.add(Calendar.MONTH, -1);
+//
+//                    Calendar calendar = (Calendar) frontCal.clone();
+//                    MonthGridView monthGridView = new MonthGridView();
+//                    monthGridView.setmCal(calendar);
+//                    monthGridView.setTodayMonth(false);
+//                    arrayList.add(0, monthGridView);
+
+
+//                    pagerAdapter.notifyDataSetChanged();
+//                pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+
+//                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
+    }
+
+    public void load() {
         for (int i = MAX_INTERVER; i > 0; i--) {
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.MONTH, -i);
@@ -74,47 +131,6 @@ public class CalendarActivity extends AppCompatActivity {
             arrayList.add(customCalendar);
         }
 
-        pager = (ViewPager) findViewById(R.id.pager);
-        pagerAdapter = new PagerAdapter(getSupportFragmentManager());
-        pager.setAdapter(pagerAdapter);
-        pager.setCurrentItem(MAX_INTERVER);
-
-        pager.setOffscreenPageLimit(1);
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-//                if (2 > position) {
-
-
-//                    frontCal.add(Calendar.MONTH, -1);
-//
-//                    Calendar calendar = (Calendar) frontCal.clone();
-//                    MonthGridView monthGridView = new MonthGridView();
-//                    monthGridView.setmCal(calendar);
-//                    monthGridView.setTodayMonth(false);
-//                    arrayList.add(0, monthGridView);
-
-
-//                    pagerAdapter.notifyDataSetChanged();
-//                pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-
-//                }
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-
     }
 
     @Override
@@ -125,6 +141,23 @@ public class CalendarActivity extends AppCompatActivity {
             arrayList.clear();
             arrayList = null;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Kog.e("");
+
+        MonthGridView monthGridView = hashMap.get(pager.getCurrentItem() + 1);
+        if (monthGridView != null) {
+            monthGridView.updateUI();
+        }
+
+        monthGridView = hashMap.get(pager.getCurrentItem() - 1);
+        if (monthGridView != null) {
+            monthGridView.updateUI();
+        }
+
     }
 
     public class PagerAdapter extends FragmentStatePagerAdapter {
@@ -148,7 +181,10 @@ public class CalendarActivity extends AppCompatActivity {
         public Object instantiateItem(ViewGroup container, int position) {
 
             Log.e("DEBUG", "instantiateItem = " + position);
-            return super.instantiateItem(container, position);
+            Object object = super.instantiateItem(container, position);
+            Log.e("DEBUG", "object = " + object);
+            hashMap.put(position, (MonthGridView) object);
+            return object;
         }
 
         @Override

@@ -11,6 +11,9 @@ public class ScheduleDrugActivity extends FragmentActivity {
     public String msg;
     public String title;
     public String date;
+
+    public int year, month, day;
+
     public DrugMainModel drugMainModel;
 
     @Override
@@ -23,6 +26,11 @@ public class ScheduleDrugActivity extends FragmentActivity {
         title = getIntent().getStringExtra(Data.INTENT_SELECT_TITLE);
         date = getIntent().getStringExtra(Data.INTENT_SELECT_DATE);
 
+        year = getIntent().getIntExtra(Data.INTENT_SELECT_YEAR, -1);
+        month = getIntent().getIntExtra(Data.INTENT_SELECT_MONTH, -1);
+        day = getIntent().getIntExtra(Data.INTENT_SELECT_DAY, -1);
+
+        Kog.e(" date = " + date);
         drugMainModel = new Gson().fromJson(msg, DrugMainModel.class);
 
         Utils.replaceFragement(this, R.id.frame_layout, new FragmentScheduleDrug());

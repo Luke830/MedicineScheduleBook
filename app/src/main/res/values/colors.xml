@@ -9,10 +9,12 @@
     <color name="list_divider">#e5e5e5</color>
     <color name="list_select">#FF4081</color>
 
-    <color name="list_select2">#0093FF</color>
+    <color name="list_select2">#2087CEEB</color>
 
     <color name="green">#00ff00</color>
     <color name="green_008000">#008000</color>
+
+    <color name="color_e68523">#E68523</color>
 
     <color name="gray_f1f1f1">#f1f1f1</color>
 

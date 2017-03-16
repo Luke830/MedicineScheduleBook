@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="매일"
-            android:textColor="@color/green"
+            android:textColor="@color/color_e68523"
             android:textSize="7dp" />
 
         <TextView
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="매주"
-            android:textColor="@color/green"
+            android:textColor="@color/color_e68523"
             android:textSize="7dp" />
 
 

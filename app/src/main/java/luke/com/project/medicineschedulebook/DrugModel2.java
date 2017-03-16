@@ -7,11 +7,11 @@ package luke.com.project.medicineschedulebook;
 public class DrugModel2 {
 
     // 약
-    public DrugMainModel.DRUG_TYPE type;
+    public Data.DRUG_TYPE type;
     // 약 투여 여부
     public boolean isDone;
 
-    public DrugModel2(DrugMainModel.DRUG_TYPE type, boolean isDone) {
+    public DrugModel2(Data.DRUG_TYPE type, boolean isDone) {
         this.type = type;
         this.isDone = isDone;
     }
