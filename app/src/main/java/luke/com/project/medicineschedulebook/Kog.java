@@ -10,6 +10,8 @@ public class Kog {
 
     private final static String PROJECT_NAME = "Brand";
 
+    public static boolean isLogDebug = false;
+
     /**
      * Project version printing
      *
@@ -39,7 +41,7 @@ public class Kog {
      */
     public static void e(String a_sMessage, Object a_oValue) {
 
-        if (BuildConfig.DEBUG) {
+        if (isLogDebug) {
             Exception e = new Exception();
             StackTraceElement callerElement = e.getStackTrace()[1];
             Log.e(callerElement.getFileName(), getCallerInfo() + "[" + callerElement.getLineNumber() + "] " + "[ " + a_sMessage + " ] = " + a_oValue);
@@ -53,7 +55,7 @@ public class Kog {
      */
     public static void e(String a_sMessage) {
 
-        if (BuildConfig.DEBUG) {
+        if (isLogDebug) {
             Exception e = new Exception();
             StackTraceElement callerElement = e.getStackTrace()[1];
             Log.e(callerElement.getFileName(), getCallerInfo() + "[" + callerElement.getLineNumber() + "] " + "[ " + a_sMessage + " ]");
@@ -62,7 +64,7 @@ public class Kog {
 
     public static void e(Exception ex) {
 
-        if (BuildConfig.DEBUG) {
+        if (isLogDebug) {
             Exception e = new Exception();
             StackTraceElement callerElement = e.getStackTrace()[1];
             Log.e(callerElement.getFileName(), getCallerInfo() + "[" + callerElement.getLineNumber() + "] ", ex);
@@ -77,7 +79,7 @@ public class Kog {
      */
     public static void w(String a_sMessage, Object a_oValue) {
 
-        if (BuildConfig.DEBUG) {
+        if (isLogDebug) {
             Exception e = new Exception();
             StackTraceElement callerElement = e.getStackTrace()[1];
             Log.w(callerElement.getFileName(), getCallerInfo() + "[" + callerElement.getLineNumber() + "] " + "[ " + a_sMessage + " ] = " + a_oValue);
@@ -91,7 +93,7 @@ public class Kog {
      */
     public static void w(String a_sMessage) {
 
-        if (BuildConfig.DEBUG) {
+        if (isLogDebug) {
             Exception e = new Exception();
             StackTraceElement callerElement = e.getStackTrace()[1];
             Log.w(callerElement.getFileName(), getCallerInfo() + "[" + callerElement.getLineNumber() + "] " + "[ " + a_sMessage + " ]");
@@ -106,7 +108,7 @@ public class Kog {
      */
     public static void i(String a_sMessage, Object a_oValue) {
 
-        if (BuildConfig.DEBUG) {
+        if (isLogDebug) {
             Exception e = new Exception();
             StackTraceElement callerElement = e.getStackTrace()[1];
             Log.i(callerElement.getFileName(), getCallerInfo() + "[" + callerElement.getLineNumber() + "] " + "[ " + a_sMessage + " ] = " + a_oValue);
@@ -120,7 +122,7 @@ public class Kog {
      */
     public static void i(String a_sMessage) {
 
-        if (BuildConfig.DEBUG) {
+        if (isLogDebug) {
             Exception e = new Exception();
             StackTraceElement callerElement = e.getStackTrace()[1];
             Log.i(callerElement.getFileName(), getCallerInfo() + "[ " + callerElement.getLineNumber() + "] " + "[ " + a_sMessage + " ]");
@@ -135,7 +137,7 @@ public class Kog {
      */
     public static void d(String a_sMessage, Object a_oValue) {
 
-        if (BuildConfig.DEBUG) {
+        if (isLogDebug) {
             Exception e = new Exception();
             StackTraceElement callerElement = e.getStackTrace()[1];
             Log.d(callerElement.getFileName(), getCallerInfo() + "[" + callerElement.getLineNumber() + "] " + "[ " + a_sMessage + " ] = " + a_oValue);
@@ -149,7 +151,7 @@ public class Kog {
      */
     public static void d(String a_sMessage) {
 
-        if (BuildConfig.DEBUG) {
+        if (isLogDebug) {
             Exception e = new Exception();
             StackTraceElement callerElement = e.getStackTrace()[1];
             Log.d(callerElement.getFileName(), getCallerInfo() + "[" + callerElement.getLineNumber() + "] " + "[ " + a_sMessage + " ]");
@@ -164,7 +166,7 @@ public class Kog {
      */
     public static void v(String a_sMessage, Object a_oValue) {
 
-        if (BuildConfig.DEBUG) {
+        if (isLogDebug) {
             Exception e = new Exception();
             StackTraceElement callerElement = e.getStackTrace()[1];
             Log.v(callerElement.getFileName(), getCallerInfo() + "[" + callerElement.getLineNumber() + "] " + "[ " + a_sMessage + " ] = " + a_oValue);
@@ -178,7 +180,7 @@ public class Kog {
      */
     public static void v(String a_sMessage) {
 
-        if (BuildConfig.DEBUG) {
+        if (isLogDebug) {
             Exception e = new Exception();
             StackTraceElement callerElement = e.getStackTrace()[1];
             Log.v(callerElement.getFileName(), getCallerInfo() + "[" + callerElement.getLineNumber() + "] " + "[ " + a_sMessage + " ]");

@@ -13,6 +13,7 @@ import android.widget.CheckedTextView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class FragmentAddWeekDrug extends Fragment implements View.OnClickListener {
 
@@ -45,9 +46,9 @@ public class FragmentAddWeekDrug extends Fragment implements View.OnClickListene
         drugCheckedTextView[6] = (CheckedTextView) view.findViewById(R.id.drug7);
         drugCheckedTextView[7] = (CheckedTextView) view.findViewById(R.id.drug8);
 
-        if (((ScheduleDrugActivity) getActivity()).drugMainModel != null) {
+        if (((ScheduleDrugActivity) getActivity()).drugListWeek != null) {
 
-            ArrayList<DrugModel> arrayList = ((ScheduleDrugActivity) getActivity()).drugMainModel.weekDrugList;
+            ArrayList<DrugModel> arrayList = ((ScheduleDrugActivity) getActivity()).drugListWeek.list;
 
             if (arrayList != null) {
 
@@ -204,32 +205,92 @@ public class FragmentAddWeekDrug extends Fragment implements View.OnClickListene
             arrayList.add(drugModel);
         }
 
-        if (((ScheduleDrugActivity) getActivity()).drugMainModel == null) {
-            ((ScheduleDrugActivity) getActivity()).drugMainModel = new DrugMainModel();
+        if (((ScheduleDrugActivity) getActivity()).drugListWeek == null) {
+            ((ScheduleDrugActivity) getActivity()).drugListWeek = new DrugList();
         }
 
-        ((ScheduleDrugActivity) getActivity()).drugMainModel.weekDrugList = arrayList;
-
-        Cursor cursor = mDbHelper.getDayDiary(((ScheduleDrugActivity) getActivity()).date);
-
-        if (cursor != null && cursor.getCount() > 0) {
-            String sBody = new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugMainModel, ((ScheduleDrugActivity) getActivity()).drugMainModel.getClass());
-            boolean isResult = mDbHelper.updateDiary(((ScheduleDrugActivity) getActivity()).date, sBody);
-            Kog.e("DEBUG", "isResult = " + isResult);
+        if (arrayList == null) {
+            ((ScheduleDrugActivity) getActivity()).drugListWeek = null;
         } else {
-            String sBody = new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugMainModel, ((ScheduleDrugActivity) getActivity()).drugMainModel.getClass());
-            long addResult = mDbHelper.createDiary(((ScheduleDrugActivity) getActivity()).date, sBody);
-            Kog.e("DEBUG", "addResult = " + addResult);
+            ((ScheduleDrugActivity) getActivity()).drugListWeek.list = arrayList;
         }
+
+        // 오늘꺼 설정
+        Cursor cursor = mDbHelper.getDayDiary(((ScheduleDrugActivity) getActivity()).date);
+        if (cursor != null && cursor.getCount() > 0) {
+
+            String sBody = new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugListWeek, DrugList.class);
+            boolean isResult = mDbHelper.updateWeekDiary(((ScheduleDrugActivity) getActivity()).date, sBody);
+            Kog.e("DEBUG", "isResult = " + isResult);
+
+        } else {
+
+            String sBody = new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugListWeek, DrugList.class);
+            long addResult = mDbHelper.createWeekDiary(((ScheduleDrugActivity) getActivity()).date, sBody);
+            Kog.e("DEBUG", "addResult = " + addResult);
+
+        }
+
+        //////////////////
+        Cursor cursor2 = null;
+        // 매일 설정..
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, ((ScheduleDrugActivity) getActivity()).year);
+        calendar.set(Calendar.MONTH, ((ScheduleDrugActivity) getActivity()).month);
+        calendar.set(Calendar.DATE, ((ScheduleDrugActivity) getActivity()).day);
+        for (int i = 1; i <= 3; i++) {
+
+            calendar.add(Calendar.DATE, +7);
+
+//            CustomCalendar customCalendar = new CustomCalendar();
+//            customCalendar.calendar = calendar;
+//            customCalendar.isToday = false;
+
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int date = calendar.get(Calendar.DATE);
+
+            final String selectDay = year + ""
+                    + String.format("%02d", (month + 1))
+                    + "" + String.format("%02d", date);
+
+//            Kog.e("year = " + year + " month = " + month + " date = " + date);
+            cursor2 = mDbHelper.getDayDiary(selectDay);
+            if (cursor2 != null && cursor2.getCount() > 0) {
+
+                while (cursor2.moveToNext()) {
+//                    String cDate = cursor2.getString(0);
+                    String week = cursor2.getString(2);
+//                    String created = cursor2.getString(2);
+
+                    DrugList drugListWeek = new Gson().fromJson(week, DrugList.class);
+                    if (drugListWeek == null) {
+                        drugListWeek = new DrugList();
+                    }
+                    drugListWeek.list = arrayList;
+                    String sBody2 = new Gson().toJson(drugListWeek, DrugList.class);
+                    boolean isResult = mDbHelper.updateWeekDiary(selectDay, sBody2);
+                    Kog.e("DEBUG", "updateDiary selectDay = " + selectDay + " isResult = " + isResult);
+                }
+            } else {
+
+                String sBody2 = new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugListWeek, ((ScheduleDrugActivity) getActivity()).drugListWeek.getClass());
+                long addResult = mDbHelper.createWeekDiary(selectDay, sBody2);
+                Kog.e("DEBUG", "createDiary selectDay = " + selectDay + " addResult = " + addResult);
+
+            }
+            cursor2.close();
+            cursor2 = null;
+        }
+
+        //////////////////
 
         mDbHelper.close();
         mDbHelper = null;
 
-        Kog.e(((ScheduleDrugActivity) getActivity()).drugMainModel.toString());
-
         Intent intent = new Intent();
-        intent.putExtra(Data.INTENT_SELECT_POS, ((ScheduleDrugActivity) getActivity()).pos);
-        intent.putExtra(Data.INTENT_DATE_MSG, new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugMainModel));
+//        intent.putExtra(Data.INTENT_SELECT_POS, ((ScheduleDrugActivity) getActivity()).pos);
+//        intent.putExtra(Data.INTENT_DATE_MSG, new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugMainModel));
         getActivity().setResult(777, intent);
         getActivity().finish();
     }

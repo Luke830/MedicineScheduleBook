@@ -6,7 +6,10 @@ package luke.com.project.medicineschedulebook;
 
 public class Data {
     public static String INTENT_SELECT_POS = "INTENT_SELECT_POS";
-    public static String INTENT_DATE_MSG = "INTENT_DATE_MSG";
+
+    public static String INTENT_DRUG_DAY_MSG = "INTENT_DRUG_DAY_MSG";
+    public static String INTENT_DRUG_WEEK_MSG = "INTENT_DRUG_WEEK_MSG";
+
     public static String INTENT_SELECT_DATE = "INTENT_SELECT_DATE";
     public static String INTENT_SELECT_TITLE = "INTENT_SELECT_TITLE";
 

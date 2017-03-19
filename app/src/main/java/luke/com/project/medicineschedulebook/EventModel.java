@@ -7,12 +7,14 @@ package luke.com.project.medicineschedulebook;
 public class EventModel {
 
     public String sDate;
-    public String sBody;
+    public String sDay;
+    public String sWeek;
     public String sCreated;
 
-    public EventModel(String sDate, String sBody, String sCreated) {
+    public EventModel(String sDate, String sDay, String sWeek, String sCreated) {
         this.sDate = sDate;
-        this.sBody = sBody;
+        this.sDay = sDay;
+        this.sWeek = sWeek;
         this.sCreated = sCreated;
     }
 
@@ -20,8 +22,10 @@ public class EventModel {
     public String toString() {
         return "EventModel{" +
                 "sDate='" + sDate + '\'' +
-                ", sBody='" + sBody + '\'' +
+                ", sDay='" + sDay + '\'' +
+                ", sWeek='" + sWeek + '\'' +
                 ", sCreated='" + sCreated + '\'' +
                 '}';
     }
+
 }

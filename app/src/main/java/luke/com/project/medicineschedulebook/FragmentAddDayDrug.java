@@ -47,9 +47,9 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
         drugCheckedTextView[2] = (CheckedTextView) view.findViewById(R.id.drug3);
         drugCheckedTextView[3] = (CheckedTextView) view.findViewById(R.id.drug4);
 
-        if (((ScheduleDrugActivity) getActivity()).drugMainModel != null) {
+        if (((ScheduleDrugActivity) getActivity()).drugListDay != null) {
 
-            ArrayList<DrugModel> arrayList = ((ScheduleDrugActivity) getActivity()).drugMainModel.dayDrugList;
+            ArrayList<DrugModel> arrayList = ((ScheduleDrugActivity) getActivity()).drugListDay.list;
 
             if (arrayList != null) {
                 DrugModel drugModel = arrayList.get(0);
@@ -162,22 +162,44 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
             arrayList.add(drugModel);
         }
 
-        if (((ScheduleDrugActivity) getActivity()).drugMainModel == null) {
-            ((ScheduleDrugActivity) getActivity()).drugMainModel = new DrugMainModel();
+
+        if (((ScheduleDrugActivity) getActivity()).drugListDay == null) {
+            ((ScheduleDrugActivity) getActivity()).drugListDay = new DrugList();
         }
 
-        ((ScheduleDrugActivity) getActivity()).drugMainModel.dayDrugList = arrayList;
+        if (arrayList == null) {
+            ((ScheduleDrugActivity) getActivity()).drugListDay = null;
+        } else {
+            ((ScheduleDrugActivity) getActivity()).drugListDay.list = arrayList;
+        }
+
 
         // 오늘꺼 설정
         Cursor cursor = mDbHelper.getDayDiary(((ScheduleDrugActivity) getActivity()).date);
         if (cursor != null && cursor.getCount() > 0) {
-            String sBody = new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugMainModel, ((ScheduleDrugActivity) getActivity()).drugMainModel.getClass());
-            boolean isResult = mDbHelper.updateDiary(((ScheduleDrugActivity) getActivity()).date, sBody);
+//            if (arrayList == null) {
+//
+//                boolean isDelete = mDbHelper.deleteDiary(((ScheduleDrugActivity) getActivity()).date);
+//                Kog.e("DEBUG", "isDelete = " + isDelete);
+//
+//            } else {
+
+            String sBody = new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugListDay, DrugList.class);
+            boolean isResult = mDbHelper.updateDayDiary(((ScheduleDrugActivity) getActivity()).date, sBody);
             Kog.e("DEBUG", "isResult = " + isResult);
+//            }
         } else {
-            String sBody1 = new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugMainModel, ((ScheduleDrugActivity) getActivity()).drugMainModel.getClass());
-            long addResult = mDbHelper.createDiary(((ScheduleDrugActivity) getActivity()).date, sBody1);
+//            if (arrayList == null) {
+//
+//                boolean isDelete = mDbHelper.deleteDiary(((ScheduleDrugActivity) getActivity()).date);
+//                Kog.e("DEBUG", "isDelete = " + isDelete);
+//
+//            } else {
+
+            String sBody1 = new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugListDay, DrugList.class);
+            long addResult = mDbHelper.createDayDiary(((ScheduleDrugActivity) getActivity()).date, sBody1);
             Kog.e("DEBUG", "addResult = " + addResult);
+//            }
         }
         cursor.close();
         cursor = null;
@@ -204,52 +226,64 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
                     + String.format("%02d", (month + 1))
                     + "" + String.format("%02d", date);
 
-            Kog.e("year = " + year + " month = " + month + " date = " + date);
+//            Kog.e("year = " + year + " month = " + month + " date = " + date);
 
             cursor2 = mDbHelper.getDayDiary(selectDay);
             if (cursor2 != null && cursor2.getCount() > 0) {
 
                 while (cursor2.moveToNext()) {
 
-                    String cDate = cursor2.getString(0);
-                    String data = cursor2.getString(1);
-                    String created = cursor2.getString(2);
+//                    String cDate = cursor2.getString(0);
+                    String day = cursor2.getString(1);
 
-                    Kog.d("DEBUG", "target sAllDate = " + cDate + " " + cDate.substring(6, 8) + " data = " + data + " created = " + created);
+//                    String created = cursor2.getString(3);
 
-                    DrugMainModel drugMainModel = new Gson().fromJson(data, DrugMainModel.class);
+//                    Kog.d("DEBUG", "target sAllDate = " + cDate + " " + cDate.substring(6, 8) + " data = " + data + " created = " + created);
 
-                    drugMainModel.dayDrugList = arrayList;
-                    String sBody2 = new Gson().toJson(drugMainModel, ((ScheduleDrugActivity) getActivity()).drugMainModel.getClass());
-                    boolean isResult = mDbHelper.updateDiary(selectDay, sBody2);
-                    Kog.e("DEBUG", "isResult = " + isResult);
+//                    if (arrayList == null) {
+//
+//                        boolean isDelete = mDbHelper.deleteDiary(selectDay);
+//                        Kog.e("DEBUG", "deleteDiary selectDay = " + selectDay + " isDelete = " + isDelete);
+//
+//                    } else {
+
+                    DrugList drugListDay = new Gson().fromJson(day, DrugList.class);
+                    if (drugListDay == null) {
+                        drugListDay = new DrugList();
+                    }
+                    drugListDay.list = arrayList;
+                    String sBody2 = new Gson().toJson(drugListDay, drugListDay.getClass());
+                    boolean isResult = mDbHelper.updateDayDiary(selectDay, sBody2);
+                    Kog.e("DEBUG", "updateDiary selectDay = " + selectDay + " isResult = " + isResult);
+//                    }
 
                 }
-
             } else {
-                String sBody2 = new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugMainModel, ((ScheduleDrugActivity) getActivity()).drugMainModel.getClass());
-                long addResult = mDbHelper.createDiary(selectDay, sBody2);
-                Kog.e("DEBUG", "addResult = " + addResult);
+//                if (arrayList == null) {
+//
+//                    boolean isDelete = mDbHelper.deleteDiary(selectDay);
+//                    Kog.e("DEBUG", "deleteDiary selectDay = " + selectDay + " isDelete = " + isDelete);
+//
+//                } else {
+                String sBody2 = new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugListDay, DrugList.class);
+                long addResult = mDbHelper.createDayDiary(selectDay, sBody2);
+                Kog.e("DEBUG", "createDiary selectDay = " + selectDay + " addResult = " + addResult);
+//                }
             }
-
             cursor2.close();
             cursor2 = null;
-
         }
 
         mDbHelper.close();
         mDbHelper = null;
 
-        Kog.e(((ScheduleDrugActivity) getActivity()).drugMainModel.toString());
-        Kog.e(((ScheduleDrugActivity) getActivity()).date);
-
+//        Kog.e(((ScheduleDrugActivity) getActivity()).drugMainModel.toString());
+//        Kog.e(((ScheduleDrugActivity) getActivity()).date);
 
         Intent intent = new Intent();
-        intent.putExtra(Data.INTENT_SELECT_POS, ((ScheduleDrugActivity) getActivity()).pos);
-        intent.putExtra(Data.INTENT_DATE_MSG, new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugMainModel));
+//        intent.putExtra(Data.INTENT_SELECT_POS, ((ScheduleDrugActivity) getActivity()).pos);
+//        intent.putExtra(Data.INTENT_DATE_MSG, new Gson().toJson(((ScheduleDrugActivity) getActivity()).drugMainModel));
         getActivity().setResult(777, intent);
         getActivity().finish();
-
-
     }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MedicineScheduleBook</string>
+    <string name="app_name">투약다이어리</string>
 
     <item name="add_id" type="id" />
     <item name="click_id" type="id" />

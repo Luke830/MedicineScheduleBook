@@ -7,8 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v4.widget.DrawerLayout;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -34,15 +33,22 @@ public class CalendarActivity extends FragmentActivity {
 
     public HashMap<Integer, MonthGridView> hashMap;
 
+    public DrawerLayout drawerLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.e("DEBUG", "onCreate onCreate onCreate");
+//        Log.e("DEBUG", "onCreate onCreate onCreate");
 
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_calendar);
 
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//        drawerLayout.openDrawer(GravityCompat.START);
+
+        Utils.replaceFragement(this, R.id.right_drawer_fragment_container, new FragmentLeftMenu());
 
         hashMap = new HashMap<Integer, MonthGridView>();
         arrayList = new ArrayList<CustomCalendar>();
@@ -63,7 +69,7 @@ public class CalendarActivity extends FragmentActivity {
             @Override
             public void onPageSelected(int position) {
 
-                Kog.e("position = " + position);
+//                Kog.e("position = " + position);
 
 
 //                arrayList.clear();
@@ -170,7 +176,7 @@ public class CalendarActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            Log.e("DEBUG", "getItem = " + position);
+//            Log.e("DEBUG", "getItem = " + position);
             MonthGridView monthGridView = new MonthGridView();
             monthGridView.setmCal(arrayList.get(position).calendar);
             monthGridView.setTodayMonth(arrayList.get(position).isToday);
@@ -181,16 +187,16 @@ public class CalendarActivity extends FragmentActivity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
 
-            Log.e("DEBUG", "instantiateItem = " + position);
+//            Log.e("DEBUG", "instantiateItem = " + position);
             Object object = super.instantiateItem(container, position);
-            Log.e("DEBUG", "object = " + object);
+//            Log.e("DEBUG", "object = " + object);
             hashMap.put(position, (MonthGridView) object);
             return object;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            Log.e("DEBUG", "destroyItem = " + position);
+//            Log.e("DEBUG", "destroyItem = " + position);
             super.destroyItem(container, position, object);
         }
 

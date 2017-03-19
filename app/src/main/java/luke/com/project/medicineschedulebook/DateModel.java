@@ -16,7 +16,9 @@ public class DateModel {
     public boolean isEvent;
 
     //    public EventModel eventModel;
-    public String sBody;
+    public String drugDay;
+    public String drugWeek;
+
     public boolean isToday;
     public DrugMainModel drugMainModel;
 
@@ -58,7 +60,8 @@ public class DateModel {
                 ", calendar=" + calendar +
                 ", textColor=" + textColor +
                 ", isEvent=" + isEvent +
-                ", sBody='" + sBody + '\'' +
+                ", drugDay='" + drugDay + '\'' +
+                ", drugWeek='" + drugWeek + '\'' +
                 ", isToday=" + isToday +
                 ", drugMainModel=" + drugMainModel +
                 '}';

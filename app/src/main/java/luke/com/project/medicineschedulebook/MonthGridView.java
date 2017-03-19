@@ -1,12 +1,16 @@
 package luke.com.project.medicineschedulebook;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -34,7 +38,7 @@ import java.util.Locale;
  * Created by itsm02 on 2017. 2. 22..
  */
 
-public class MonthGridView extends Fragment {
+public class MonthGridView extends Fragment implements View.OnClickListener {
 
     /**
      * 연/월 텍스트뷰
@@ -112,6 +116,8 @@ public class MonthGridView extends Fragment {
         tvDate = (TextView) view.findViewById(R.id.tv_date);
         gridView = (GridView) view.findViewById(R.id.gridview);
 
+        view.findViewById(R.id.image_button_menu).setOnClickListener(this);
+
         // 오늘에 날짜를 세팅 해준다.
         long now = System.currentTimeMillis();
         final Date date = new Date(now);
@@ -151,17 +157,17 @@ public class MonthGridView extends Fragment {
         hashMap = new HashMap<String, EventModel>();
         Cursor cursor = mDbHelper.getMonthNotes(Utils.getCurYearMonth(mCal));
         int cnt = cursor.getCount();
-        Log.d("DEBUG", "cnt = " + cnt);
+//        Log.d("DEBUG", "cnt = " + cnt);
 
         while (cursor.moveToNext()) {
             String cDate = cursor.getString(0);
-//            String title = cursor.getString(1);
-            String body = cursor.getString(1);
-            String created = cursor.getString(2);
+            String day = cursor.getString(1);
+            String week = cursor.getString(2);
+            String created = cursor.getString(3);
 
-            EventModel eventModel = new EventModel(cDate, body, created);
+            EventModel eventModel = new EventModel(cDate, day, week, created);
             hashMap.put(cDate.substring(6, 8), eventModel);
-            Log.d("DEBUG", "target sAllDate = " + cDate + " " + cDate.substring(6, 8) + " body = " + body + " created = " + created);
+//            Log.d("DEBUG", "target sAllDate = " + cDate + " " + cDate.substring(6, 8) + " day = " + day + " week = " + week + " created = " + created);
         }
         cursor.close();
         mDbHelper.close();
@@ -232,11 +238,15 @@ public class MonthGridView extends Fragment {
 
             key = String.valueOf(String.format("%02d", day));
             if (hashMap.containsKey(key)) {
-                dateModel.sBody = hashMap.get(key).sBody;
-                dateModel.drugMainModel = new Gson().fromJson(dateModel.sBody, DrugMainModel.class);
+                dateModel.drugDay = hashMap.get(key).sDay;
+                dateModel.drugWeek = hashMap.get(key).sWeek;
+                dateModel.drugMainModel = new DrugMainModel();
 
-                if (dateModel.drugMainModel.dayDrugList != null && dateModel.drugMainModel.dayDrugList.size() > 0
-                        || dateModel.drugMainModel.weekDrugList != null && dateModel.drugMainModel.weekDrugList.size() > 0) {
+                dateModel.drugMainModel.drugListDay = new Gson().fromJson(dateModel.drugDay, DrugList.class);
+                dateModel.drugMainModel.drugListWeek = new Gson().fromJson(dateModel.drugWeek, DrugList.class);
+
+                if (dateModel.drugMainModel.drugListDay != null && dateModel.drugMainModel.drugListDay.list != null && dateModel.drugMainModel.drugListDay.list.size() > 0
+                        || dateModel.drugMainModel.drugListWeek != null && dateModel.drugMainModel.drugListWeek.list != null && dateModel.drugMainModel.drugListWeek.list.size() > 0) {
                     dateModel.isEvent = true;
                 } else {
                     dateModel.isEvent = false;
@@ -259,6 +269,18 @@ public class MonthGridView extends Fragment {
         dayList.clear();
         loadDB();
         gridAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        DrawerLayout drawerLayout = ((CalendarActivity) getActivity()).drawerLayout;
+        if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            drawerLayout.closeDrawer(Gravity.LEFT);
+        } else {
+            drawerLayout.openDrawer(Gravity.LEFT);
+        }
+
     }
 
     /**
@@ -342,13 +364,13 @@ public class MonthGridView extends Fragment {
 
             if (getItem(position).drugMainModel != null) {
 
-                if (getItem(position).drugMainModel.dayDrugList != null && getItem(position).drugMainModel.dayDrugList.size() > 0) {
+                if (getItem(position).drugMainModel.drugListDay != null && getItem(position).drugMainModel.drugListDay.list != null && getItem(position).drugMainModel.drugListDay.list.size() > 0) {
                     holder.tvDay.setVisibility(View.VISIBLE);
                 } else {
                     holder.tvDay.setVisibility(View.GONE);
                 }
 
-                if (getItem(position).drugMainModel.weekDrugList != null && getItem(position).drugMainModel.weekDrugList.size() > 0) {
+                if (getItem(position).drugMainModel.drugListWeek != null && getItem(position).drugMainModel.drugListWeek.list != null && getItem(position).drugMainModel.drugListWeek.list.size() > 0) {
                     holder.tvWeek.setVisibility(View.VISIBLE);
                 } else {
                     holder.tvWeek.setVisibility(View.GONE);
@@ -426,7 +448,7 @@ public class MonthGridView extends Fragment {
         public void onClick(View v) {
 
             final int pos = (int) v.getTag(R.id.click_id);
-            Log.e("DEBUG", "pos = " + pos);
+//            Log.e("DEBUG", "pos = " + pos);
             final DateModel dateModel = gridAdapter.getItem(pos);
             Log.e("DEBUG", "dateModel = " + dateModel);
 
@@ -439,54 +461,50 @@ public class MonthGridView extends Fragment {
                     + "월 " + String.format("%02d", Integer.parseInt(dateModel.day))
                     + "일 ";
 
-//            if (dateModel.isEvent) {
-//
-////                dateModel.isEvent = false;
-////                mDbHelper.open();
-////                boolean rmResult = mDbHelper.deleteDiary(allDay);
-////                mDbHelper.close();
-////                Log.e("DEBUG", "rmResult = " + rmResult);
-//
-//                ViewUtil.addDiaryDialog(getActivity(), dateModel.sBody != null ? dateModel.sBody : null, selectTitle, "추가하기", new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//                        DrugMainModel drugMainModel = (DrugMainModel) v.getTag(R.id.add_id);
-//                        mDbHelper.open();
-//                        if (drugMainModel != null) {
-//                            Log.e("DEBUG", drugMainModel.toString());
-//
-//
-//                            Log.e("DEBUG", " allDay = " + selectDay);
-//                            String sBody = new Gson().toJson(drugMainModel, drugMainModel.getClass());
-//                            boolean isResult = mDbHelper.updateDiary(selectDay, "aaa", sBody);
-//
-//                            dateModel.sBody = sBody;
-//                            Log.e("DEBUG", "addResult = " + isResult);
-////                            if (addResult > -1) {
-////                                dateModel.isEvent = true;
-////                            }
-//
-//                        } else {
-//                            dateModel.isEvent = false;
-//                            dateModel.sBody = null;
-//                            boolean rmResult = mDbHelper.deleteDiary(selectDay);
-//                            Log.e("DEBUG", "rmResult = " + rmResult);
-//                        }
-//                        mDbHelper.close();
-//                        gridAdapter.notifyDataSetChanged();
-//
-//                    }
-//                });
-//
-//                gridAdapter.notifyDataSetChanged();
+
+            Kog.e("drugDay = " + dateModel.drugDay);
+            Kog.e("drugWeek = " + dateModel.drugWeek);
+
+            if ((!TextUtils.isEmpty(dateModel.drugDay) && "null".equals(dateModel.drugDay) == false)
+                    || !TextUtils.isEmpty(dateModel.drugWeek) && "null".equals(dateModel.drugWeek) == false) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                String[] arrays = {"투약 하셨나요?", "투약 일정 추가 / 변경"};
+                builder.setItems(arrays, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int position) {
+
+                        Kog.e("position = " + position);
+
+                        if (position == 0) {
+
+                            goScheduleDrugDone(dateModel, pos, selectDay, selectTitle);
+
+                        } else if (position == 1) {
+
+                            goScheduleDrug(dateModel, pos, selectDay, selectTitle);
+
+                        }
+
+                    }
+                });
+                builder.create();
+                builder.show();
+            } else {
+
+                goScheduleDrug(dateModel, pos, selectDay, selectTitle);
+
+            }
 
 
-//            } else {
+        }
 
-            Intent intent = new Intent(getActivity(), ScheduleDrugActivity.class);
+        public void goScheduleDrugDone(DateModel dateModel, int pos, String selectDay, String selectTitle) {
+            Intent intent = new Intent(getActivity(), ScheduleDrugDoneActivity.class);
             intent.putExtra(Data.INTENT_SELECT_POS, pos);
-            intent.putExtra(Data.INTENT_DATE_MSG, dateModel.sBody);
+
+            intent.putExtra(Data.INTENT_DRUG_DAY_MSG, dateModel.drugDay);
+            intent.putExtra(Data.INTENT_DRUG_WEEK_MSG, dateModel.drugWeek);
+
             intent.putExtra(Data.INTENT_SELECT_DATE, selectDay);
             intent.putExtra(Data.INTENT_SELECT_TITLE, selectTitle);
 
@@ -495,33 +513,24 @@ public class MonthGridView extends Fragment {
             intent.putExtra(Data.INTENT_SELECT_DAY, Integer.parseInt(dateModel.day));
 
             startActivityForResult(intent, 660);
+        }
 
-//                ViewUtil.addDiaryDialog(getActivity(), dateModel.sBody != null ? dateModel.sBody : null, title, "추가하기", new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//                        DrugMainModel drugMainModel = (DrugMainModel) v.getTag(R.id.add_id);
-//                        if (drugMainModel != null) {
-//                            Log.e("DEBUG", drugMainModel.toString());
-//                            mDbHelper.open();
-//                            Log.e("DEBUG", " allDay = " + allDay);
-//                            String sBody = new Gson().toJson(drugMainModel, drugMainModel.getClass());
-//                            long addResult = mDbHelper.createDiary(allDay, "aaa", sBody);
-//                            mDbHelper.close();
-//                            dateModel.sBody = sBody;
-//                            Log.e("DEBUG", "addResult = " + addResult);
-//                            if (addResult > -1) {
-//                                dateModel.isEvent = true;
-//                            }
-//
-//                            gridAdapter.notifyDataSetChanged();
-//                        }
-//
-//                    }
-//                });
-//                ViewUtil.checkDiaryDialog(getActivity(), "bbb", "투약 하셨나요?", "투약 일정 추가/변경", null, null);
-//            }
-//        }
+
+        public void goScheduleDrug(DateModel dateModel, int pos, String selectDay, String selectTitle) {
+            Intent intent = new Intent(getActivity(), ScheduleDrugActivity.class);
+            intent.putExtra(Data.INTENT_SELECT_POS, pos);
+
+            intent.putExtra(Data.INTENT_DRUG_DAY_MSG, dateModel.drugDay);
+            intent.putExtra(Data.INTENT_DRUG_WEEK_MSG, dateModel.drugWeek);
+
+            intent.putExtra(Data.INTENT_SELECT_DATE, selectDay);
+            intent.putExtra(Data.INTENT_SELECT_TITLE, selectTitle);
+
+            intent.putExtra(Data.INTENT_SELECT_YEAR, mCal.get(Calendar.YEAR));
+            intent.putExtra(Data.INTENT_SELECT_MONTH, mCal.get(Calendar.MONTH));
+            intent.putExtra(Data.INTENT_SELECT_DAY, Integer.parseInt(dateModel.day));
+
+            startActivityForResult(intent, 660);
         }
 
 

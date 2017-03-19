@@ -29,7 +29,7 @@ public class Utils {
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DATE);
         String date = new StringBuffer().append(year).append(String.format("%02d", month)).append(String.format("%02d", day)).toString();
-        Log.d("DEBUG", "2 date = " + date);
+//        Log.d("DEBUG", "2 date = " + date);
         return date;
     }
 
@@ -37,7 +37,7 @@ public class Utils {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         String date = new StringBuffer().append(year).append(String.format("%02d", month)).toString();
-        Log.d("DEBUG", "1 date = " + date);
+//        Log.d("DEBUG", "1 date = " + date);
         return date;
     }
 

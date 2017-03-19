@@ -9,7 +9,7 @@
 
 
     <Button
-        android:id="@+id/button_back"
+        android:id="@+id/done_button_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="뒤로"
@@ -18,7 +18,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/text_view_title"
+        android:id="@+id/done_text_view_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -35,7 +35,7 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/button_day"
+            android:id="@+id/done_button_day"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
@@ -45,7 +45,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/button_week"
+            android:id="@+id/done_button_week"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="매주"

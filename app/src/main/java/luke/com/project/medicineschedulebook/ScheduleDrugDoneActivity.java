@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentActivity;
 
 import com.google.gson.Gson;
 
-public class ScheduleDrugActivity extends FragmentActivity {
+public class ScheduleDrugDoneActivity extends FragmentActivity {
 
     public int pos;
 
@@ -24,7 +24,7 @@ public class ScheduleDrugActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule_drug);
+        setContentView(R.layout.activity_schedule_drug_done);
 
         pos = getIntent().getIntExtra(Data.INTENT_SELECT_POS, -1);
 
@@ -54,7 +54,7 @@ public class ScheduleDrugActivity extends FragmentActivity {
             }
         }
 
-        Utils.replaceFragement(this, R.id.frame_layout, new FragmentScheduleDrug());
+        Utils.replaceFragement(this, R.id.frame_layout_done, new FragmentScheduleDrugDone());
 
     }
 }
