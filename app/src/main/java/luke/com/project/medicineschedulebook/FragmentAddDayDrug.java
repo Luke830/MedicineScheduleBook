@@ -173,6 +173,7 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
             ((ScheduleDrugActivity) getActivity()).drugListDay.list = arrayList;
         }
 
+//        Kog.e(" %% ((ScheduleDrugActivity) getActivity()).drugListDay = " + ((ScheduleDrugActivity) getActivity()).drugListDay);
 
         // 오늘꺼 설정
         Cursor cursor = mDbHelper.getDayDiary(((ScheduleDrugActivity) getActivity()).date);
@@ -248,11 +249,16 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
 //                    } else {
 
                     DrugList drugListDay = new Gson().fromJson(day, DrugList.class);
-                    if (drugListDay == null) {
-                        drugListDay = new DrugList();
+
+                    if (arrayList == null) {
+                        drugListDay = null;
+                    } else {
+                        if (drugListDay == null) {
+                            drugListDay = new DrugList();
+                        }
+                        drugListDay.list = arrayList;
                     }
-                    drugListDay.list = arrayList;
-                    String sBody2 = new Gson().toJson(drugListDay, drugListDay.getClass());
+                    String sBody2 = new Gson().toJson(drugListDay, DrugList.class);
                     boolean isResult = mDbHelper.updateDayDiary(selectDay, sBody2);
                     Kog.e("DEBUG", "updateDiary selectDay = " + selectDay + " isResult = " + isResult);
 //                    }

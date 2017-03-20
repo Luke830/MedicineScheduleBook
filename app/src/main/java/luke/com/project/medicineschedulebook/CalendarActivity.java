@@ -8,7 +8,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,7 +22,7 @@ import java.util.HashMap;
  */
 
 
-public class CalendarActivity extends FragmentActivity {
+public class CalendarActivity extends FragmentActivity implements View.OnClickListener {
 
     ViewPager pager;
     PagerAdapter pagerAdapter;
@@ -34,6 +37,7 @@ public class CalendarActivity extends FragmentActivity {
     public HashMap<Integer, MonthGridView> hashMap;
 
     public DrawerLayout drawerLayout;
+    private TextView tvDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,15 @@ public class CalendarActivity extends FragmentActivity {
         setContentView(R.layout.activity_calendar);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        findViewById(R.id.image_button_menu).setOnClickListener(this);
+
+        tvDate = (TextView) findViewById(R.id.tv_date);
+
+
+        //현재 날짜 텍스트뷰에 뿌려줌
+        Calendar cal = Calendar.getInstance();
+        tvDate.setText(cal.get(Calendar.YEAR) + " / " + String.format("%02d", (cal.get(Calendar.MONTH) + 1)));
+
 //        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 //        drawerLayout.openDrawer(GravityCompat.START);
 
@@ -69,29 +82,10 @@ public class CalendarActivity extends FragmentActivity {
             @Override
             public void onPageSelected(int position) {
 
-//                Kog.e("position = " + position);
+                CustomCalendar customCalendar = arrayList.get(position);
+                Calendar cal = customCalendar.calendar;
+                tvDate.setText(cal.get(Calendar.YEAR) + " / " + String.format("%02d", (cal.get(Calendar.MONTH) + 1)));
 
-
-//                arrayList.clear();
-//                load();
-//                pagerAdapter.notifyDataSetChanged();
-
-//                if (2 > position) {
-
-
-//                    frontCal.add(Calendar.MONTH, -1);
-//
-//                    Calendar calendar = (Calendar) frontCal.clone();
-//                    MonthGridView monthGridView = new MonthGridView();
-//                    monthGridView.setmCal(calendar);
-//                    monthGridView.setTodayMonth(false);
-//                    arrayList.add(0, monthGridView);
-
-
-//                    pagerAdapter.notifyDataSetChanged();
-//                pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-
-//                }
 
             }
 
@@ -165,6 +159,16 @@ public class CalendarActivity extends FragmentActivity {
             monthGridView.updateUI();
         }
 
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            drawerLayout.closeDrawer(Gravity.LEFT);
+        } else {
+            drawerLayout.openDrawer(Gravity.LEFT);
+        }
     }
 
     public class PagerAdapter extends FragmentStatePagerAdapter {

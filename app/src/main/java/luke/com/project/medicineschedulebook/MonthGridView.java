@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,25 +25,22 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by itsm02 on 2017. 2. 22..
  */
 
-public class MonthGridView extends Fragment implements View.OnClickListener {
+public class MonthGridView extends Fragment {
 
-    /**
-     * 연/월 텍스트뷰
-     */
-
-    private TextView tvDate;
+//    /**
+//     * 연/월 텍스트뷰
+//     */
+//
+//    private TextView tvDate;
 
     /**
      * 그리드뷰 어댑터
@@ -113,21 +109,11 @@ public class MonthGridView extends Fragment implements View.OnClickListener {
 
         View view = inflater.inflate(R.layout.grid_activity_main, container, false);
 
-        tvDate = (TextView) view.findViewById(R.id.tv_date);
+//        tvDate = (TextView) view.findViewById(R.id.tv_date);
         gridView = (GridView) view.findViewById(R.id.gridview);
 
-        view.findViewById(R.id.image_button_menu).setOnClickListener(this);
-
-        // 오늘에 날짜를 세팅 해준다.
-        long now = System.currentTimeMillis();
-        final Date date = new Date(now);
-        //연,월,일을 따로 저장
-        final SimpleDateFormat curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
-        final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
-        final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
-
         //현재 날짜 텍스트뷰에 뿌려줌
-        tvDate.setText(mCal.get(Calendar.YEAR) + " / " + String.format("%02d", (mCal.get(Calendar.MONTH) + 1)));
+//        tvDate.setText(mCal.get(Calendar.YEAR) + " / " + String.format("%02d", (mCal.get(Calendar.MONTH) + 1)));
 
         dayList = new ArrayList<DateModel>();
         loadDB();
@@ -269,18 +255,6 @@ public class MonthGridView extends Fragment implements View.OnClickListener {
         dayList.clear();
         loadDB();
         gridAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onClick(View view) {
-
-        DrawerLayout drawerLayout = ((CalendarActivity) getActivity()).drawerLayout;
-        if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
-            drawerLayout.closeDrawer(Gravity.LEFT);
-        } else {
-            drawerLayout.openDrawer(Gravity.LEFT);
-        }
-
     }
 
     /**

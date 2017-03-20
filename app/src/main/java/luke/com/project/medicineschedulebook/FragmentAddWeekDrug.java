@@ -264,10 +264,16 @@ public class FragmentAddWeekDrug extends Fragment implements View.OnClickListene
 //                    String created = cursor2.getString(2);
 
                     DrugList drugListWeek = new Gson().fromJson(week, DrugList.class);
-                    if (drugListWeek == null) {
-                        drugListWeek = new DrugList();
+
+                    if (arrayList == null) {
+                        drugListWeek = null;
+                    } else {
+                        if (drugListWeek == null) {
+                            drugListWeek = new DrugList();
+                        }
+                        drugListWeek.list = arrayList;
                     }
-                    drugListWeek.list = arrayList;
+
                     String sBody2 = new Gson().toJson(drugListWeek, DrugList.class);
                     boolean isResult = mDbHelper.updateWeekDiary(selectDay, sBody2);
                     Kog.e("DEBUG", "updateDiary selectDay = " + selectDay + " isResult = " + isResult);
