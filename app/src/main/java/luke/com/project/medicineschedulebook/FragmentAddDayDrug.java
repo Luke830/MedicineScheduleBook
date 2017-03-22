@@ -254,7 +254,7 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
                         drugListDay = null;
                     } else {
                         if (drugListDay == null) {
-                            drugListDay = new DrugList();
+//                            drugListDay = new DrugList();
                         }
                         drugListDay.list = arrayList;
                     }

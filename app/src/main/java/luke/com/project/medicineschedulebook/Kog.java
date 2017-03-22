@@ -10,7 +10,7 @@ public class Kog {
 
     private final static String PROJECT_NAME = "Brand";
 
-    public static boolean isLogDebug = false;
+    public static boolean isLogDebug = true;
 
     /**
      * Project version printing
