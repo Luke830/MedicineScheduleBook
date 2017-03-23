@@ -21,8 +21,8 @@ public class CustomApplication extends Application {
     @Override
     public void onCreate() {
 
-        mUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
-        Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandlerApplication());
+//        mUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
+//        Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandlerApplication());
 
         super.onCreate();
     }

@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -39,6 +41,8 @@ public class CalendarActivity extends FragmentActivity implements View.OnClickLi
     public DrawerLayout drawerLayout;
     private TextView tvDate;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -48,11 +52,12 @@ public class CalendarActivity extends FragmentActivity implements View.OnClickLi
 
         setContentView(R.layout.activity_calendar);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         findViewById(R.id.image_button_menu).setOnClickListener(this);
 
         tvDate = (TextView) findViewById(R.id.tv_date);
-
 
         //현재 날짜 텍스트뷰에 뿌려줌
         Calendar cal = Calendar.getInstance();

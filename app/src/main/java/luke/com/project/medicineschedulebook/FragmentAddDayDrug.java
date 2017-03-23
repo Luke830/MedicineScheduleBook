@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ import java.util.Calendar;
 public class FragmentAddDayDrug extends Fragment implements View.OnClickListener {
 
     public CheckedTextView[] drugCheckedTextView = new CheckedTextView[4];
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public FragmentAddDayDrug() {
         super();
@@ -39,8 +42,9 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
 //        return super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_add_day_drug, container, false);
 
-        view.findViewById(R.id.add_day_button).setOnClickListener(this);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
 
+        view.findViewById(R.id.add_day_button).setOnClickListener(this);
 
         drugCheckedTextView[0] = (CheckedTextView) view.findViewById(R.id.drug1);
         drugCheckedTextView[1] = (CheckedTextView) view.findViewById(R.id.drug2);
@@ -108,6 +112,8 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
             CheckedTextView checkedTextView = (CheckedTextView) view;
             checkedTextView.setChecked(!checkedTextView.isChecked());
 
+            sss();
+
         } else {
             switch (view.getId()) {
                 case R.id.add_day_button:
@@ -115,6 +121,20 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
                     break;
             }
         }
+
+    }
+
+    public void sss() {
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "id-1");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "name-1");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
+
+//        FirebaseAnalytics.Param.LEVEL
+        mFirebaseAnalytics.setMinimumSessionDuration(1000 * 3);
+        mFirebaseAnalytics.setUserProperty("favorite_category", "Android Tutorials");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
     }
 
@@ -254,7 +274,7 @@ public class FragmentAddDayDrug extends Fragment implements View.OnClickListener
                         drugListDay = null;
                     } else {
                         if (drugListDay == null) {
-//                            drugListDay = new DrugList();
+                            drugListDay = new DrugList();
                         }
                         drugListDay.list = arrayList;
                     }

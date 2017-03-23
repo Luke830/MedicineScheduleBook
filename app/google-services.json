@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "112175468021",
+    "firebase_url": "https://diarydrug.firebaseio.com",
+    "project_id": "diarydrug",
+    "storage_bucket": "diarydrug.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112175468021:android:535bcfb8eb4d855d",
+        "android_client_info": {
+          "package_name": "luke.com.project.medicineschedulebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112175468021-qtdf23uanqute7pea3dq6dhs67j7vmk3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHgPRm_y1c4GiobpOdNksBVF_H1wO4CwQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
