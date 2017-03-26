@@ -5,9 +5,25 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <TextView
+    <Button
+        android:id="@+id/diary_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="투약 다이어리 보기" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_cccccc" />
+
+    <Button
+        android:id="@+id/alarm_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/white"
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
         android:text="알람" />
@@ -18,17 +34,19 @@
         android:background="@color/color_cccccc" />
 
 
-    <TextView
+    <Button
+        android:id="@+id/chart_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@android:color/white"
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
-        android:text="처방전" />
+        android:text="투약 성취도 그래프" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/color_cccccc" />
+    <!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1px"-->
+    <!--android:background="@color/color_cccccc" />-->
 
 
 </LinearLayout>

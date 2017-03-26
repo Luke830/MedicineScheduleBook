@@ -140,6 +140,20 @@ public class DiaryDbAdapter {
 
     }
 
+    public Cursor getMonthNotesBetween(String rowYearMonth1, String rowYearMonth2) {
+
+//        Log.d("DEBUG", "rowYearMonth = " + rowYearMonth);
+
+        Cursor mCursor =
+                mDb.query(true, DATABASE_TABLE, new String[]{KEY_DATE,
+                                KEY_DAY, KEY_WEEK, KEY_CREATED}, KEY_DATE + " BETWEEN " + rowYearMonth1 + " AND " + rowYearMonth2, null, null,
+                        null, null, null);
+//        if (mCursor != null) {
+//            mCursor.moveToFirst();
+//        }
+        return mCursor;
+    }
+
     public boolean updateDayDiary(String rowYearMonthDay, String day) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_DAY, day);

@@ -23,8 +23,8 @@ public class CustomApplication extends Application {
 
 //        mUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
 //        Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandlerApplication());
-
         super.onCreate();
+
     }
 
     /**
@@ -59,6 +59,11 @@ public class CustomApplication extends Application {
 
             //예외처리를 하지 않고 DefaultUncaughtException으로 넘긴다.
             mUncaughtExceptionHandler.uncaughtException(thread, ex);
+
+            android.os.Process.killProcess( android.os.Process.myPid());
+            System.exit(10);
+
+
         }
 
     }
