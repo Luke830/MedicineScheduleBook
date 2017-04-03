@@ -23,6 +23,7 @@ public class FragmentLeftMenu extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_left_menu, container, false);
         view.findViewById(R.id.diary_button).setOnClickListener(this);
         view.findViewById(R.id.alarm_button).setOnClickListener(this);
+        view.findViewById(R.id.prescription_button).setOnClickListener(this);
         view.findViewById(R.id.chart_button).setOnClickListener(this);
 
         return view;
@@ -41,6 +42,11 @@ public class FragmentLeftMenu extends Fragment implements View.OnClickListener {
 
             case R.id.alarm_button:
 
+                break;
+
+            case R.id.prescription_button:
+                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                Utils.replaceFragement(getActivity(), R.id.main_fragment_container, new FragmentPrescription());
                 break;
 
             case R.id.chart_button:

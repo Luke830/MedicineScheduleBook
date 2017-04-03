@@ -33,6 +33,20 @@
         android:layout_height="1px"
         android:background="@color/color_cccccc" />
 
+    <Button
+        android:id="@+id/prescription_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="처방전" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_cccccc" />
+
 
     <Button
         android:id="@+id/chart_button"
